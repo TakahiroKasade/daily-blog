@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"> <!-- 這一行很重要！告訴 IDE 我們要用 Thymeleaf -->
+<head>
+    <meta charset="UTF-8">
+    <title>我的作品部落格</title>
+    <!-- 引入 Bootstrap 5 (CDN) 讓我們不用寫 CSS 也很漂亮 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container py-5">
+    <header class="text-center mb-5">
+        <h1 class="display-4 fw-bold">Daily Coding Blog</h1>
+        <p class="lead text-muted">記錄我的轉職之路與 Side Projects</p>
+    </header>
+
+    <!-- 部落格文章區 -->
+    <section class="mb-5">
+        <h2 class="mb-4">最新文章</h2>
+        <div class="row">
+            <!-- th:each="post : ${posts}"  這就是迴圈！從 Model 拿出 posts，每一篇叫 post -->
+            <div class="col-md-6 mb-4" th:each="post : ${posts}">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${post.title}">文章標題</h5>
+                        <p class="card-text text-muted" th:text="${#temporals.format(post.createdTime, 'yyyy-MM-dd HH:mm')}">時間</p>
+                        <p class="card-text" th:text="${post.content}">這裡會顯示文章內容...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 作品集區 -->
+    <section>
+        <h2 class="mb-4">作品集 (Portfolio)</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4" th:each="project : ${projects}">
+                <div class="card h-100 shadow-sm">
+                    <img th:src="${project.imageUrl}" class="card-img-top" alt="Project Image" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${project.name}">作品名稱</h5>
+                        <p class="card-text" th:text="${project.description}">作品描述</p>
+                        <a th:href="${project.websiteUrl}" class="btn btn-primary btn-sm" target="_blank">查看專案</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+</body>
+</html>
