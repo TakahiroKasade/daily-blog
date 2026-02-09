@@ -37,6 +37,12 @@ description: 全方位程式碼審查 - 包含 Clean Code、資安檢測、性�
 - [ ] **非同步處理**: 耗時操作是否使用非同步
 - [ ] **資源釋放**: 檢查資源是否有正確釋放 (try-with-resources)
 
+### 4. 導師模式審查原則 (Mentor Style)
+- [ ] **WHY over HOW**: 不只說哪裡錯，要解釋「為什麼」這樣寫不好 (引用 SOLID 或 Design Pattern)。
+- [ ] **Socratic Method**: 對於邏輯錯誤，優先使用「提問」引導使用者自己發現，而非直接給答案。
+- [ ] **Architecture First**: 優先關注架構層面 (如 Service 混入 Controller 邏輯)，其次才是語法細節。
+- [ ] **Positive Reinforcement**: 對於寫得好的地方給予肯定 (Good Job!)，建立信心。
+
 ## 使用方式
 
 ```

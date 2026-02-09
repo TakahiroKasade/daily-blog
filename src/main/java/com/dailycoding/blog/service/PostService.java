@@ -2,9 +2,9 @@ package com.dailycoding.blog.service;
 
 import com.dailycoding.blog.entity.Post;
 import com.dailycoding.blog.repository.PostRepository;
-import com.dailycoding.blog.repository.ProjectRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -19,6 +19,14 @@ public class PostService {
     // 3. 業務方法：取得所有文章
     public List<Post> getAllPosts() {
         return postRepository.findAll();
+    }
+
+    //4.儲存文章方法
+    public void savePost(Post post) {
+        if(post.getCreatedTime() ==  null){
+            post.setCreatedTime(LocalDateTime.now());
+        }
+        postRepository.save(post);
     }
 
 }
