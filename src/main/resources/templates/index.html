@@ -1,53 +1,109 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"> <!-- 這一行很重要！告訴 IDE 我們要用 Thymeleaf -->
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>我的作品部落格</title>
-    <!-- 引入 Bootstrap 5 (CDN) 讓我們不用寫 CSS 也很漂亮 -->
+    <title>Daily Coding | Java Developer</title>
+    <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/css/style.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-light">
+<body>
 
-<div class="container py-5">
-    <header class="text-center mb-5">
-        <h1 class="display-4 fw-bold">Daily Coding Blog</h1>
-        <p class="lead text-muted">記錄我的轉職之路與 Side Projects</p>
-    </header>
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#"><i class="fas fa-code me-2"></i>DAILY_CODING</a>
+        <div class="ms-auto">
+            <a href="https://github.com/TakahiroKasade" class="btn btn-outline-light btn-sm"><i class="fab fa-github me-1"></i> GitHub</a>
+        </div>
+    </div>
+</nav>
 
-    <!-- 部落格文章區 -->
-    <section class="mb-5">
-        <h2 class="mb-4">最新文章</h2>
-        <div class="row">
-            <!-- th:each="post : ${posts}"  這就是迴圈！從 Model 拿出 posts，每一篇叫 post -->
-            <div class="col-md-6 mb-4" th:each="post : ${posts}">
-                <div class="card h-100 shadow-sm">
+<div class="container" style="margin-top: 80px;">
+    
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <h1 class="hero-title">Hello, World! I'm <span th:text="${name} ?: 'A Java Developer'"></span></h1>
+        <p class="hero-subtitle">
+            > Current Status: <span class="text-info">Refactoring Legacy Code...</span><span class="cursor"></span>
+        </p>
+        <div class="mt-4">
+            <span class="skill-tag"><i class="fab fa-java me-1"></i> Java 17</span>
+            <span class="skill-tag"><i class="fas fa-leaf me-1"></i> Spring Boot 3</span>
+            <span class="skill-tag"><i class="fas fa-database me-1"></i> SQL / JPA</span>
+            <span class="skill-tag"><i class="fab fa-docker me-1"></i> Docker</span>
+        </div>
+        <div class="mt-5">
+            <a href="#portfolio" class="btn btn-primary btn-lg px-4 me-3">查看作品集 (Portfolio)</a>
+            <a href="#blog" class="btn btn-outline-secondary btn-lg px-4">技術筆記 (Blog)</a>
+        </div>
+    </div>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="mb-5">
+        <div class="d-flex align-items-center mb-4">
+            <h2 class="h3 fw-bold text-white mb-0"><i class="fas fa-rocket text-primary me-2"></i>精選專案</h2>
+            <div class="ms-3 flex-grow-1 border-top border-secondary"></div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-6" th:each="project : ${projects}">
+                <div class="card h-100">
                     <div class="card-body">
-                        <h5 class="card-title" th:text="${post.title}">文章標題</h5>
-                        <p class="card-text text-muted" th:text="${#temporals.format(post.createdTime, 'yyyy-MM-dd HH:mm')}">時間</p>
-                        <p class="card-text" th:text="${post.content}">這裡會顯示文章內容...</p>
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <h3 class="card-title h5" th:text="${project.name}">Project Name</h3>
+                            <span class="badge bg-primary">Side Project</span>
+                        </div>
+                        <p class="card-text small mb-4" th:text="${project.description}">Description...</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="small text-muted">Thinking in Java</div>
+                            <a th:href="${project.websiteUrl}" class="btn btn-sm btn-outline-info" target="_blank">
+                                View Source <i class="fas fa-external-link-alt ms-1"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 作品集區 -->
-    <section>
-        <h2 class="mb-4">作品集 (Portfolio)</h2>
+    <!-- Blog Section -->
+    <section id="blog" class="mb-5">
+        <div class="d-flex align-items-center mb-4">
+            <h2 class="h3 fw-bold text-white mb-0"><i class="fas fa-terminal text-primary me-2"></i>最新筆記</h2>
+            <div class="ms-3 flex-grow-1 border-top border-secondary"></div>
+        </div>
+
         <div class="row">
-            <div class="col-md-4 mb-4" th:each="project : ${projects}">
-                <div class="card h-100 shadow-sm">
-                    <img th:src="${project.imageUrl}" class="card-img-top" alt="Project Image" style="height: 200px; object-fit: cover;">
-                    <div class="card-body">
-                        <h5 class="card-title" th:text="${project.name}">作品名稱</h5>
-                        <p class="card-text" th:text="${project.description}">作品描述</p>
-                        <a th:href="${project.websiteUrl}" class="btn btn-primary btn-sm" target="_blank">查看專案</a>
+            <div class="col-md-12">
+                <div class="list-group list-group-flush bg-transparent">
+                    <div th:each="post : ${posts}" class="list-group-item bg-transparent border-bottom border-secondary py-4">
+                        <div class="d-flex w-100 justify-content-between mb-2">
+                            <h5 class="mb-1 text-info fw-bold" th:text="${post.title}">Post Title</h5>
+                            <small class="text-muted" th:text="${#temporals.format(post.createdTime, 'yyyy-MM-dd')}">Date</small>
+                        </div>
+                        <p class="mb-1 text-light" th:text="${post.content}">Content...</p>
+                        <small class="text-muted">> Read more...</small>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <!-- Footer -->
+    <footer class="text-center">
+        <p class="mb-0">© 2026 Daily Coding. Built with <i class="fas fa-heart text-danger"></i> & Spring Boot.</p>
+        <small class="text-muted">Designed optimized for recruitment.</small>
+    </footer>
+
 </div>
 
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
