@@ -55,12 +55,30 @@
         </dependency>
 
 
-        <!-- 4. H2 資料庫 (開發用記憶體資料庫) -->
+        <!-- 4. H2 資料庫 (保留給測試用) -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <version>2.4.240</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- 5. PostgreSQL 資料庫驅動 -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
+        </dependency>
+
+        <!-- 6. Spring Security (認證與授權) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <!-- 7. Thymeleaf Security整合 (前端權限判斷) -->
+        <dependency>
+             <groupId>org.thymeleaf.extras</groupId>
+             <artifactId>thymeleaf-extras-springsecurity6</artifactId>
         </dependency>
 
 
