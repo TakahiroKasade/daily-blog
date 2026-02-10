@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>New Post | Daily Coding</title>
+    <title>Edit Post | Daily Coding</title>
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->
@@ -24,10 +24,10 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header bg-transparent border-bottom border-secondary">
-                    <h3 class="text-info mb-0"><i class="fas fa-pencil-alt me-2"></i>Write New Post</h3>
+                    <h3 class="text-info mb-0"><i class="fas fa-pencil-alt me-2"></i>Edit Post</h3>
                 </div>
                 <div class="card-body">
-                    <form th:action="@{/posts}" th:object="${post}" method="post">
+                    <form th:action="@{/posts/edit/{id}(id=${post.id})}" th:object="${post}" method="post">
                         <!-- Title Field -->
                         <div class="mb-3">
                             <label for="title" class="form-label fw-bold text-info">Title</label>
@@ -43,25 +43,10 @@
                         <!-- Submit Button -->
                         <div class="d-grid gap-2 text-end">
                             <button type="submit" class="btn btn-primary btn-lg">
-                                <i class="fas fa-paper-plane me-2"></i>Publish Post
+                                <i class="fas fa-save me-2"></i>Update Post
                             </button>
                         </div>
                     </form>
-
-                    <!-- 
-                        TODO: [Mentor Mission] 請在此處實作 <form> 表單
-                        
-                        1. 使用 th:action="@{/posts}" 設定提交路徑
-                        2. 使用 th:object="${post}" 綁定後端傳來的物件
-                        3. method="post"
-                        4. 兩個輸入欄位：
-                           - 標題 (Title): 使用 <input type="text"> 並用 th:field="*{title}" 綁定
-                           - 內容 (Content): 使用 <textarea> 並用 th:field="*{content}" 綁定
-                        5. 提交按鈕 <button type="submit">
-                        
-                        (提示：記得加上 class="form-control" 讓樣式好看一點)
-                    -->
-
                 </div>
             </div>
         </div>
