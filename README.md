@@ -10,7 +10,8 @@
 | 📝 文章 CRUD | 新增、編輯、刪除技術筆記 | ✅ 完成 |
 | 🎨 科技風 UI | Bootstrap 5 深色主題 + 動態動畫 | ✅ 完成 |
 | 🗃️ PostgreSQL | 持久化資料儲存 | ✅ 完成 |
-| 🔐 Spring Security | 身份驗證與授權 (Role-Based) | 🔧 開發中 |
+| 🔐 Spring Security | 身份驗證與授權 (Role-Based) | ✅ 完成 |
+| 🔑 登入/註冊 | 自訂登入頁面、會員註冊、密碼加密 | ✅ 完成 |
 | 🏗️ 作品集展示 | Side Projects 卡片展示 | ✅ 完成 |
 
 ## 🛠️ 技術堆疊
@@ -31,10 +32,13 @@
 ```
 src/main/java/com/dailycoding/blog/
 ├── config/
+│   ├── DataSeeder.java              # 資料播種機 (含管理員初始化)
 │   └── SecurityConfig.java          # Spring Security 設定
 ├── controller/
 │   ├── IndexController.java         # 首頁控制器
-│   └── PostController.java          # 文章 CRUD 控制器
+│   ├── LoginController.java         # 登入頁面控制器
+│   ├── PostController.java          # 文章 CRUD 控制器
+│   └── RegisterController.java      # 註冊頁面控制器
 ├── entity/
 │   ├── Post.java                    # 文章實體
 │   ├── Project.java                 # 作品集實體
@@ -45,7 +49,6 @@ src/main/java/com/dailycoding/blog/
 │   └── UserRepository.java          # 使用者資料存取
 └── service/
     ├── CustomUserDetailsService.java # 自訂認證服務
-    ├── DataSeeder.java              # 資料播種機 (CommandLineRunner)
     ├── PostService.java             # 文章業務邏輯
     └── ProjectService.java          # 作品業務邏輯
 ```

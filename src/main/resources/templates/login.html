@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Daily Coding | Login</title>
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/css/style.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<div class="auth-container">
+    <div class="auth-card">
+        <!-- Logo -->
+        <div class="auth-logo">
+            <i class="fas fa-code"></i>
+        </div>
+        <h2 class="auth-title">Welcome Back</h2>
+        <p class="auth-subtitle">登入你的 Daily Coding 帳號</p>
+
+        <!-- 錯誤提示 -->
+        <div th:if="${param.error}" class="alert alert-danger d-flex align-items-center" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i>
+            帳號或密碼錯誤，請重試
+        </div>
+
+        <!-- 登入表單 -->
+        <form th:action="@{/login}" method="post">
+            <div class="mb-3">
+                <label class="form-label">
+                    <i class="fas fa-user me-1"></i> 帳號
+                </label>
+                <input type="text" name="username" class="form-control auth-input"
+                       placeholder="輸入你的帳號" required autofocus>
+            </div>
+            <div class="mb-4">
+                <label class="form-label">
+                    <i class="fas fa-lock me-1"></i> 密碼
+                </label>
+                <input type="password" name="password" class="form-control auth-input"
+                       placeholder="輸入你的密碼" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100 auth-btn">
+                <i class="fas fa-sign-in-alt me-2"></i>Login
+            </button>
+        </form>
+
+        <!-- 底部連結 -->
+        <div class="auth-footer">
+            <span>還沒有帳號？</span>
+            <a href="/register" class="auth-link">立即註冊</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

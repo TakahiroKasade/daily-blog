@@ -127,3 +127,102 @@ footer {
     padding: 2rem 0;
     margin-top: 4rem;
 }
+
+/* ==================== */
+/* Auth Pages (Login / Register) */
+/* ==================== */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+.auth-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 3rem;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 0 40px rgba(56, 189, 248, 0.1);
+}
+
+.auth-logo {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 2.5rem;
+    color: var(--accent-color);
+    text-shadow: 0 0 20px var(--accent-glow);
+}
+
+.auth-title {
+    text-align: center;
+    font-size: 1.75rem;
+    font-weight: 800;
+    background: linear-gradient(to right, #38bdf8, #818cf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.25rem;
+}
+
+.auth-subtitle {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+}
+
+.auth-input {
+    background-color: var(--bg-dark) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-primary) !important;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.auth-input:focus {
+    border-color: var(--accent-color) !important;
+    box-shadow: 0 0 10px var(--accent-glow) !important;
+    outline: none;
+}
+
+.auth-input::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.6;
+}
+
+.auth-btn {
+    padding: 0.75rem;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+}
+
+.auth-footer {
+    text-align: center;
+    margin-top: 1.5rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.auth-link {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 600;
+    margin-left: 0.25rem;
+    transition: all 0.3s ease;
+}
+
+.auth-link:hover {
+    color: #0ea5e9;
+    text-shadow: 0 0 10px var(--accent-glow);
+}
+
+.form-label {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}

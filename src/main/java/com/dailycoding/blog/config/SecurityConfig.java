@@ -17,10 +17,11 @@ public class SecurityConfig {
 
         http
             .authorizeHttpRequests((requests) -> requests
-                    .requestMatchers("/","/css/**","/js/**","/images/**").permitAll()
+                    .requestMatchers("/","/register","/css/**","/js/**","/images/**").permitAll()
                     .anyRequest().authenticated()
             )
             .formLogin((form) -> form
+                    .loginPage("/login")
                     .defaultSuccessUrl("/", true)
                     .permitAll()
             )
