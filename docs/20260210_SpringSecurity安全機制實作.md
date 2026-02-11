@@ -10,8 +10,8 @@
 - [x] `UserRepository.java` (使用者 Repository)
 - [x] `CustomUserDetailsService.java` (自訂認證服務)
 - [x] `SecurityConfig.java` (安全性設定)
-- [ ] `DataSeeder.java` 新增管理員帳號 — 待實作
-- [ ] `index.html` 前端權限控制 — 待實作
+- [x] `DataSeeder.java` 新增管理員帳號
+- [x] `index.html` 前端權限控制
 
 ## 📁 異動檔案
 | 檔案路徑 | 異動類型 | 說明 |
@@ -229,6 +229,7 @@ public class SecurityConfig {
 ```
 
 ## 📝 備註
-- Phase 2 尚未完成，剩餘項目：DataSeeder 管理員初始化、前端權限控制。
+- **Phase 2: Security Guard 完成！** 🎉
 - 本次實作採用 **Mentor Mode (導師模式)**，所有程式碼均由學習者手動撰寫。
 - IntelliJ 快捷鍵筆記：`Alt + Enter` (自動修正 import), `Ctrl + Alt + O` (整理 import)。
+
