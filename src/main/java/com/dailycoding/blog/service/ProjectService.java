@@ -16,6 +16,7 @@ public class ProjectService {
         this.projectRepository = projectRepository;
     }
 
+    //取得所有項目
     public List<Project> getAllProjects(){
         return  projectRepository.findAll();
     }
