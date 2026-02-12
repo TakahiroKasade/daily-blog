@@ -1,8 +1,10 @@
 package com.dailycoding.blog.config;
 
+import com.dailycoding.blog.entity.Experience;
 import com.dailycoding.blog.entity.Post;
 import com.dailycoding.blog.entity.Project;
 import com.dailycoding.blog.entity.User;
+import com.dailycoding.blog.repository.ExperienceRepository;
 import com.dailycoding.blog.repository.PostRepository;
 import com.dailycoding.blog.repository.ProjectRepository;
 import com.dailycoding.blog.repository.UserRepository;
@@ -20,12 +22,15 @@ public class DataSeeder implements CommandLineRunner {
     private ProjectRepository projectRepository;
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
+    private ExperienceRepository experienceRepository;
 
-    public DataSeeder(PostRepository postRepository, ProjectRepository projectRepository, UserRepository userRepository,PasswordEncoder  passwordEncoder) {
+    public DataSeeder(PostRepository postRepository, ProjectRepository projectRepository, UserRepository userRepository,
+                      PasswordEncoder  passwordEncoder, ExperienceRepository experienceRepository) {
         this.postRepository = postRepository;
         this.projectRepository = projectRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.experienceRepository = experienceRepository;
     }
     @Override
     public void run(String... args) throws Exception {
@@ -56,6 +61,18 @@ public class DataSeeder implements CommandLineRunner {
             user.setRole("ADMIN");
             userRepository.save(user);
             System.out.println("管理者帳號已建立");
+        }
+
+        if (experienceRepository.count() == 0) {
+            Experience e1 = new Experience("Java 工程師", "某科技公司", "負責後端 API 開發",
+                    "2024-06", "至今", "WORK", "Java, Spring Boot, SQL");
+            Experience e2 = new Experience("資訊管理系", "某大學", "主修程式設計與資料庫",
+                    "2020-09", "2024-06", "EDUCATION", "Java, Python, Database");
+            Experience e3 = new Experience("Daily Blog", "Side Project", "個人技術部落格系統",
+                    "2026-01", "至今", "PROJECT", "Spring Boot, Thymeleaf, PostgreSQL");
+            experienceRepository.saveAll(Arrays.asList(e1, e2, e3));
+            System.out.println("✅ 預設履歷資料已建立！");
+                        
         }
 
 

@@ -13,6 +13,7 @@
 | 🔐 Spring Security | 身份驗證與授權 (Role-Based) | ✅ 完成 |
 | 🔑 登入/註冊 | 自訂登入頁面、會員註冊、密碼加密 | ✅ 完成 |
 | 🏗️ 作品集展示 | Side Projects 卡片展示 | ✅ 完成 |
+| 📋 互動式履歷 | 時間軸 UI 展示工作/學歷/專案經歷 | ✅ 完成 |
 
 ## 🛠️ 技術堆疊
 
@@ -38,17 +39,21 @@ src/main/java/com/dailycoding/blog/
 │   ├── IndexController.java         # 首頁控制器
 │   ├── LoginController.java         # 登入頁面控制器
 │   ├── PostController.java          # 文章 CRUD 控制器
-│   └── RegisterController.java      # 註冊頁面控制器
+│   ├── RegisterController.java      # 註冊頁面控制器
+│   └── ResumeController.java        # 履歷頁面控制器
 ├── entity/
+│   ├── Experience.java              # 經歷實體 (履歷)
 │   ├── Post.java                    # 文章實體
 │   ├── Project.java                 # 作品集實體
 │   └── User.java                    # 使用者實體 (Security)
 ├── repository/
+│   ├── ExperienceRepository.java    # 經歷資料存取
 │   ├── PostRepository.java          # 文章資料存取
 │   ├── ProjectRepository.java       # 作品資料存取
 │   └── UserRepository.java          # 使用者資料存取
 └── service/
     ├── CustomUserDetailsService.java # 自訂認證服務
+    ├── ExperienceService.java       # 經歷業務邏輯
     ├── PostService.java             # 文章業務邏輯
     └── ProjectService.java          # 作品業務邏輯
 ```
