@@ -12,6 +12,12 @@
     <link href="/css/style.css" rel="stylesheet">
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Hero Effects CSS -->
+    <link href="/css/hero-effects.css" rel="stylesheet">
+    <!-- Card Effects CSS -->
+    <link href="/css/card-effects.css" rel="stylesheet">
+    <!-- Responsive CSS -->
+    <link href="/css/responsive.css" rel="stylesheet">
 </head>
 <body>
 
@@ -22,20 +28,52 @@
 <div class="container" style="margin-top: 80px;">
     
     <!-- Hero Section -->
-    <div class="hero-section">
-        <h1 class="hero-title">Hello, World! I'm <span th:text="${name} ?: 'A Java Developer'"></span></h1>
-        <p class="hero-subtitle">
-            > Current Status: <span class="text-info">Refactoring Legacy Code...</span><span class="cursor"></span>
-        </p>
-        <div class="mt-4">
-            <span class="skill-tag"><i class="fab fa-java me-1"></i> Java 17</span>
-            <span class="skill-tag"><i class="fas fa-leaf me-1"></i> Spring Boot 3</span>
-            <span class="skill-tag"><i class="fas fa-database me-1"></i> SQL / JPA</span>
-            <span class="skill-tag"><i class="fab fa-docker me-1"></i> Docker</span>
-        </div>
-        <div class="mt-5">
-            <a href="#portfolio" class="btn btn-primary btn-lg px-4 me-3">查看作品集 (Portfolio)</a>
-            <a href="#blog" class="btn btn-outline-secondary btn-lg px-4">技術筆記 (Blog)</a>
+    <div class="hero-section text-center position-relative overflow-hidden">
+        <!-- 動態背景圓形 (裝飾用) -->
+        <div class="hero-bg-circle"></div>
+
+        <div class="container position-relative z-1">
+            <!-- 大頭貼 -->
+            <div class="mb-4">
+                <div class="avatar-container d-inline-block p-1 rounded-circle border border-2 border-primary">
+                    <!-- 這裡先用 FontAwesome 當大頭貼，之後可以換成 <img> -->
+                    <div class="bg-dark rounded-circle d-flex align-items-center justify-content-center" 
+                         style="width: 120px; height: 120px;">
+                        <i class="fas fa-user-astronaut fa-4x text-light"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 標題 -->
+            <h1 class="hero-title display-4 fw-bold mb-3">
+                Hello, I'm <span class="text-primary" th:text="${name} ?: 'Takahiro'"></span>
+            </h1>
+
+            <!-- 打字機特效 -->
+            <h3 class="h4 text-light mb-4 text-secondary">
+                I am a <span class="typewriter text-primary"></span><span class="cursor">|</span>
+            </h3>
+
+            <!-- 技能標籤 -->
+            <div class="mt-4 mb-5">
+                <span class="skill-tag"><i class="fab fa-java me-1"></i> Java 17</span>
+                <span class="skill-tag"><i class="fas fa-leaf me-1"></i> Spring Boot</span>
+                <span class="skill-tag"><i class="fas fa-database me-1"></i> PostgreSQL</span>
+                <span class="skill-tag"><i class="fab fa-docker me-1"></i> Docker</span>
+            </div>
+
+            <!-- 按鈕 -->
+            <div class="d-flex justify-content-center gap-3">
+                <a href="#portfolio" class="btn btn-primary btn-lg px-4 rounded-pill">
+                    <i class="fas fa-folder-open me-2"></i>Portfolio
+                </a>
+                <a href="#blog" class="btn btn-outline-light btn-lg px-4 rounded-pill">
+                    <i class="fas fa-pen-nib me-2"></i>Blog
+                </a>
+                <a href="/resume" class="btn btn-outline-info btn-lg px-4 rounded-pill">
+                    <i class="fas fa-file-alt me-2"></i>Resume
+                </a>
+            </div>
         </div>
     </div>
 
@@ -81,24 +119,34 @@
 
         <div class="row">
             <div class="col-md-12">
-                <div class="list-group list-group-flush bg-transparent">
-                    <div th:each="post : ${posts}" class="list-group-item bg-transparent border-bottom border-secondary py-4">
+                <div class="list-group list-group-flush bg-transparent gap-3">
+                    <div th:each="post : ${posts}" class="post-card p-4 mb-3">
                         <div class="d-flex w-100 justify-content-between mb-2">
-                            <h5 class="mb-1 text-info fw-bold" th:text="${post.title}">Post Title</h5>
-                            <small class="text-muted" th:text="${#temporals.format(post.createdTime, 'yyyy-MM-dd')}">Date</small>
+                            <h5 class="mb-1 text-info fw-bold">
+                                <!-- 分類放在前面 -->
+                                <span class="badge bg-secondary me-2" th:text="${post.category}">Tech</span>
+                                <!-- 標題放在後面 -->
+                                <span th:text="${post.title}">Post Title</span>
+                            </h5>
+                            <div class="text-end">
+                                <small class="d-block text-muted" th:text="${#temporals.format(post.createdTime, 'yyyy-MM-dd')}">Date</small>
+                                <span class="read-time justify-content-end">
+                                    <i class="far fa-clock me-1"></i> <span th:text="${post.readingTime}">5 min read</span>
+                                </span>
+                            </div>
                         </div>
-                        <p class="mb-1 text-light" th:text="${post.content}">Content...</p>
-                        <div class="d-flex justify-content-between align-items-center mt-2">
-                            <small class="text-muted">> Read more...</small>
+                        <p class="mb-3 text-light" th:text="${post.content}">Content...</p>
+                        <div class="d-flex justify-content-between align-items-center mt-2 pt-3 border-top border-secondary">
+                            <a href="#" class="btn btn-sm btn-outline-primary rounded-pill px-3">Read Full Story</a>
                             <div sec:authorize="hasRole('ADMIN')">
                                 <a th:href="@{/posts/edit/{id}(id=${post.id})}" 
                                    class="btn btn-sm btn-outline-info me-2">
-                                   <i class="fas fa-edit"></i> Edit
+                                   <i class="fas fa-edit"></i>
                                 </a>
                                 <a th:href="@{/posts/delete/{id}(id=${post.id})}" 
                                    class="btn btn-sm btn-outline-danger"
                                    onclick="return confirm('你是認真的嗎？刪除後救不回來喔！');">
-                                   <i class="fas fa-trash-alt"></i> Delete
+                                   <i class="fas fa-trash-alt"></i>
                                 </a>
                             </div>
                         </div>
@@ -118,5 +166,36 @@
 
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Typewriter Effect
+    const words = ["Java Developer.", "Spring Boot Lover.", "Bug Hunter.", "Coffee Drinker."];
+    let i = 0;
+    let timer;
+
+    function typeWriter() {
+        const heading = document.querySelector(".typewriter");
+        const word = words[i];
+        let j = 0;
+        let isDeleting = false;
+
+        function loop() {
+            heading.innerHTML = isDeleting ? word.substring(0, j--) : word.substring(0, j++);
+
+            if (!isDeleting && j === word.length + 1) {
+                isDeleting = true;
+                setTimeout(loop, 2000); // Pause at end of word
+            } else if (isDeleting && j === -1) {
+                isDeleting = false;
+                i = (i + 1) % words.length;
+                setTimeout(loop, 500); // Pause before next word
+            } else {
+                setTimeout(loop, isDeleting ? 100 : 150); // Typing speed
+            }
+        }
+        loop();
+    }
+
+    document.addEventListener('DOMContentLoaded', typeWriter);
+</script>
 </body>
 </html>

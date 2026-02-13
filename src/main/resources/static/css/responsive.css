@@ -1,0 +1,38 @@
+/* ... existing code ... */
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem; /* Smaller title on mobile */
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    .hero-section {
+        padding: 60px 0;
+    }
+    
+    .avatar-container div {
+        width: 100px !important;
+        height: 100px !important;
+    }
+    
+    .timeline {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    
+    .timeline::before {
+        left: 30px; /* Adjust line position */
+    }
+    
+    .timeline-dot {
+        left: 22px; /* Adjust dot position */
+    }
+    
+    .timeline-item {
+        padding-left: 50px; /* Adjust content padding */
+    }
+}

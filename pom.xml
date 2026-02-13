@@ -89,6 +89,12 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- 9. Lombok (自動生成程式碼) -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
 
         <!-- 測試用-->
         <dependency>
@@ -96,6 +102,8 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+       
 
     </dependencies>
 

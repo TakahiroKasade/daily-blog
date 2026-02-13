@@ -32,7 +32,16 @@
                             <label for="title" class="form-label fw-bold text-info">Title</label>
                             <input type="text" id="title" th:field="*{title}" class="form-control" placeholder="Enter post title..." required>
                         </div>
-
+                        <!-- Category Field -->
+                        <div class="mb-3">
+                            <label for="category" class="form-label fw-bold text-info">Category</label>
+                            <select id="category" th:field="*{category}" class="form-select">
+                                <option value="Tech">Tech (技術)</option>
+                                <option value="Life">Life (生活)</option>
+                                <option value="Review">Review (心得)</option>
+                                <option value="Showcase">Showcase (作品)</option>
+                            </select>
+                        </div>
                         <!-- Content Field -->
                         <div class="mb-3">
                             <label for="content" class="form-label fw-bold text-info">Content</label>

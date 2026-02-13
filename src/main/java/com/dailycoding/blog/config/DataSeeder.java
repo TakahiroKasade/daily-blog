@@ -36,8 +36,8 @@ public class DataSeeder implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         if(postRepository.count()==0){
-            Post p1 = new Post("第一篇部落格", "這是我的第一篇文章內容...", LocalDateTime.now());
-            Post p2 = new Post("學習 Spring Boot", "Spring Boot 真是太方便了！", LocalDateTime.now());
+            Post p1 = new Post("第一篇部落格", "這是我的第一篇文章內容...", LocalDateTime.now(), "Life");
+            Post p2 = new Post("學習 Spring Boot", "Spring Boot 真是太方便了！", LocalDateTime.now(), "Tech");
 
             postRepository.saveAll(Arrays.asList(p1,p2));
             System.out.println("✅ 預設文章資料已建立！");
