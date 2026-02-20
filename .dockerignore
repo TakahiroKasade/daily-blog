@@ -1,0 +1,10 @@
+.git
+.gitignore
+.idea
+*.iml
+target/
+uploads/
+docs/
+.agent/
+.gemini/
+README.md
