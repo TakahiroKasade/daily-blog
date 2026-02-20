@@ -39,4 +39,9 @@ public class PostService {
         return postRepository.findById(id).orElse(null);
     }
 
+    //  5. 搜尋文章
+    public List<Post> searchPosts(String keyword){
+        return postRepository.findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(keyword, keyword);
+    }
+
 }

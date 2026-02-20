@@ -63,7 +63,7 @@
             </div>
 
             <!-- 按鈕 -->
-            <div class="d-flex justify-content-center gap-3">
+            <div class="d-flex justify-content-center gap-3 mb-4">
                 <a href="#portfolio" class="btn btn-primary btn-lg px-4 rounded-pill">
                     <i class="fas fa-folder-open me-2"></i>Portfolio
                 </a>
@@ -73,6 +73,30 @@
                 <a href="/resume" class="btn btn-outline-info btn-lg px-4 rounded-pill">
                     <i class="fas fa-file-alt me-2"></i>Resume
                 </a>
+            </div>
+
+            <!-- 搜尋框 (移到 Hero Section) -->
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <form action="/" method="get" class="position-relative">
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text bg-white border-0 text-primary ps-4"><i class="fas fa-search"></i></span>
+                            <input class="form-control border-0 ps-2 py-3" type="search" name="keyword" 
+                                   placeholder="Search for articles..." aria-label="Search" th:value="${keyword}" style="border-radius: 0 50px 50px 0;">
+                            <button class="btn btn-primary rounded-pill px-4 ms-2 position-absolute end-0 top-0 bottom-0 m-1" type="submit" style="z-index: 5;">Search</button>
+                        </div>
+                        <!-- input-group-text 圓角修正 -->
+                        <style>
+                            .input-group-text { border-radius: 50px 0 0 50px; }
+                        </style>
+                    </form>
+                    <!-- Search Result Alert -->
+                    <div th:if="${keyword}" class="mt-3 text-white">
+                        <i class="fas fa-info-circle me-1"></i>
+                        搜尋 "<strong>[[${keyword}]]</strong>" 找到 <strong>[[${posts.size()}]]</strong> 篇文章
+                        <a href="/" class="text-info ms-2 text-decoration-underline"><i class="fas fa-times me-1"></i>清除</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -95,7 +119,7 @@
                         <p class="card-text small mb-4" th:text="${project.description}">Description...</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="small text-muted">Thinking in Java</div>
-                            <a th:href="${project.websiteUrl}" class="btn btn-sm btn-outline-info" target="_blank">
+                            <a th:if="${project.websiteUrl}" th:href="${project.websiteUrl}" class="btn btn-sm btn-outline-info" target="_blank">
                                 View Source <i class="fas fa-external-link-alt ms-1"></i>
                             </a>
                         </div>

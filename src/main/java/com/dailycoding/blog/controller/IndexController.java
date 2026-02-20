@@ -7,6 +7,7 @@ import com.dailycoding.blog.service.ProjectService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -22,11 +23,17 @@ public class IndexController {
     }
 
     @GetMapping("/")
-    public String index(Model model){
+    public String index(Model model, @RequestParam(required = false)String keyword){
 
-        List<Post>  posts = postService.getAllPosts();
+        List<Post>  posts;
+        if(keyword != null &&  !keyword.isEmpty()){
+            posts = postService.searchPosts(keyword);
+            model.addAttribute("keyword", keyword);
+        }else{
+            posts = postService.getAllPosts();
+        }
+
         List<Project>  projects = projectService.getAllProjects();
-
         model.addAttribute("posts",posts);
         model.addAttribute("projects",projects);
 

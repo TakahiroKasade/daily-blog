@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的專案作品集</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link th:href="@{/css/responsive.css}" rel="stylesheet" />
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9fa; }
+        .project-card { transition: transform 0.3s; margin-bottom: 20px; border: none; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .project-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .card-img-top { height: 200px; object-fit: cover; border-top-left-radius: 0.5rem; border-top-right-radius: 0.5rem; }
+        .btn-action { margin-right: 5px; }
+    </style>
+</head>
+<body>
+
+<!-- 導覽列片段 -->
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1><i class="fas fa-project-diagram me-2 text-primary"></i>專案作品集</h1>
+        <!-- 新增專案按鈕 -->
+        <a href="/projects/new" class="btn btn-primary">
+            <i class="fas fa-plus me-1"></i> 新增專案
+        </a>
+    </div>
+
+    <!-- 專案列表 (卡片式) -->
+    <div class="row">
+        <div class="col-md-4 mb-4" th:each="project : ${projects}">
+            <div class="card project-card h-100">
+                <img th:src="${project.imageUrl != null && project.imageUrl != '' ? project.imageUrl : 'https://via.placeholder.com/400x200?text=No+Image'}" 
+                     class="card-img-top" alt="Project Image">
+                
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title fw-bold" th:text="${project.name}">專案名稱</h5>
+                    <p class="card-text text-muted flex-grow-1" th:text="${project.description}">專案描述</p>
+                    
+                    <div class="mt-3 d-flex justify-content-between align-items-center">
+                        <div>
+                             <a th:if="${project.websiteUrl}" th:href="${project.websiteUrl}" target="_blank" class="btn btn-outline-info btn-sm btn-action" title="查看網站">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                        <div>
+                            <a th:href="@{/projects/edit/{id}(id=${project.id})}" class="btn btn-warning btn-sm btn-action text-white" title="編輯">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a th:href="@{/projects/delete/{id}(id=${project.id})}" class="btn btn-danger btn-sm btn-action" 
+                               onclick="return confirm('確定要刪除這個專案嗎？');" title="刪除">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 空狀態提示 -->
+    <div th:if="${#lists.isEmpty(projects)}" class="alert alert-info mt-4 text-center">
+        <i class="fas fa-info-circle me-2"></i>目前還沒有加入任何專案作品，趕快點擊右上角新增一個吧！
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
