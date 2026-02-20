@@ -23,13 +23,18 @@ public class IndexController {
     }
 
     @GetMapping("/")
-    public String index(Model model, @RequestParam(required = false)String keyword){
+    public String index(Model model,
+                        @RequestParam(required = false)String keyword,
+                        @RequestParam(required = false)String category) {
 
-        List<Post>  posts;
-        if(keyword != null &&  !keyword.isEmpty()){
+        List<Post> posts;
+        if (keyword != null && !keyword.isEmpty()) {
             posts = postService.searchPosts(keyword);
             model.addAttribute("keyword", keyword);
-        }else{
+        } else if (category!=null && !category.isEmpty()) {
+            posts = postService.getPostsByCategory(category);
+            model.addAttribute("category", category);
+        } else{
             posts = postService.getAllPosts();
         }
 

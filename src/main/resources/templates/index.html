@@ -90,12 +90,18 @@
                             .input-group-text { border-radius: 50px 0 0 50px; }
                         </style>
                     </form>
-                    <!-- Search Result Alert -->
-                    <div th:if="${keyword}" class="mt-3 text-white">
-                        <i class="fas fa-info-circle me-1"></i>
-                        搜尋 "<strong>[[${keyword}]]</strong>" 找到 <strong>[[${posts.size()}]]</strong> 篇文章
-                        <a href="/" class="text-info ms-2 text-decoration-underline"><i class="fas fa-times me-1"></i>清除</a>
-                    </div>
+                <!-- Search Result Alert -->
+                <div th:if="${keyword}" class="mt-3 text-white">
+                    <i class="fas fa-info-circle me-1"></i>
+                    搜尋 "<strong>[[${keyword}]]</strong>" 找到 <strong>[[${posts.size()}]]</strong> 篇文章
+                    <a href="/" class="text-info ms-2 text-decoration-underline"><i class="fas fa-times me-1"></i>清除</a>
+                </div>
+
+                <!-- Category Filter Alert -->
+                <div th:if="${category}" class="mt-3 text-white">
+                    <i class="fas fa-filter me-1"></i>
+                    正在瀏覽分類： <strong class="badge bg-warning text-dark">[[${category}]]</strong>
+                    <a href="/" class="text-info ms-2 text-decoration-underline"><i class="fas fa-times me-1"></i>清除</a>
                 </div>
             </div>
         </div>
@@ -147,8 +153,10 @@
                     <div th:each="post : ${posts}" class="post-card p-4 mb-3">
                         <div class="d-flex w-100 justify-content-between mb-2">
                             <h5 class="mb-1 text-info fw-bold">
-                                <!-- 分類放在前面 -->
-                                <span class="badge bg-secondary me-2" th:text="${post.category}">Tech</span>
+                                <!-- 分類放在前面 (可點擊) -->
+                                <a th:href="@{/(category=${post.category})}" 
+                                   class="badge bg-secondary me-2 text-decoration-none highlight-hover" 
+                                   th:text="${post.category}">Tech</a>
                                 <!-- 標題放在後面 -->
                                 <span th:text="${post.title}">Post Title</span>
                             </h5>

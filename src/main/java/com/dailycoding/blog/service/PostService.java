@@ -44,4 +44,9 @@ public class PostService {
         return postRepository.findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(keyword, keyword);
     }
 
+    // 6. 根據分類取得文章 (強制重新編譯)
+    public List<Post> getPostsByCategory(String category) {
+        return postRepository.findByCategory(category);
+    }
+
 }
