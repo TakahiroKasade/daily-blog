@@ -3,6 +3,7 @@ package com.dailycoding.blog.controller;
 import com.dailycoding.blog.entity.Post;
 import com.dailycoding.blog.entity.Project;
 import com.dailycoding.blog.service.MarkdownService;
+import com.dailycoding.blog.service.GithubService;
 import com.dailycoding.blog.service.PostService;
 import com.dailycoding.blog.service.ProjectService;
 import org.springframework.stereotype.Controller;
@@ -19,12 +20,14 @@ public class IndexController {
 
     private final PostService postService;
     private final ProjectService projectService;
-    private final MarkdownService markdownService; // Inject MarkdownService
+    private final MarkdownService markdownService;
+    private final GithubService githubService; // Inject GithubService
 
-    public IndexController(PostService postService, ProjectService projectService, MarkdownService markdownService) {
+    public IndexController(PostService postService, ProjectService projectService, MarkdownService markdownService, GithubService githubService) {
         this.postService = postService;
         this.projectService = projectService;
         this.markdownService = markdownService;
+        this.githubService = githubService;
     }
 
     @GetMapping("/")
@@ -55,6 +58,9 @@ public class IndexController {
 
         List<Project> projects = projectService.getAllProjects();
         model.addAttribute("projects", projects);
+
+        // Add GitHub Events
+        model.addAttribute("githubEvents", githubService.getRecentEvents());
 
         return "index";
     }
