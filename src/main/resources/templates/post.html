@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${post.title} + ' | Daily Coding'">Post Title</title>
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Fira+Code&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/css/style.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Highlight.js (程式碼高亮) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
+
+    <style>
+        /* 文章閱讀專用樣式 */
+        .post-container {
+            max-width: 800px;
+            margin: 100px auto 60px;
+        }
+        
+        /* Markdown 內容樣式 */
+        .markdown-content {
+            color: #e0e0e0;
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+        
+        /* 標題 */
+        .markdown-content h1, .markdown-content h2, .markdown-content h3 {
+            color: #fff;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .markdown-content h1 { border-bottom: 2px solid #5a5a5a; padding-bottom: 0.5rem; }
+        .markdown-content h2 { border-bottom: 1px solid #5a5a5a; padding-bottom: 0.5rem; }
+        
+        /* 連結 */
+        .markdown-content a {
+            color: #0dcaf0;
+            text-decoration: none;
+            border-bottom: 1px dashed #0dcaf0;
+        }
+        .markdown-content a:hover {
+            color: #fff;
+            background-color: rgba(13, 202, 240, 0.2);
+        }
+        
+        /* 引用 */
+        .markdown-content blockquote {
+            border-left: 4px solid #0dcaf0;
+            padding-left: 1rem;
+            color: #aaa;
+            font-style: italic;
+            background: rgba(255,255,255,0.05);
+            padding: 1rem;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        /* 程式碼區塊 */
+        pre {
+            background-color: #282c34;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+        }
+        
+        code {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+        }
+        
+        /* 表格 */
+        .markdown-content table {
+            width: 100%;
+            margin-bottom: 1.5rem;
+            color: #fff;
+            border-collapse: collapse;
+        }
+        .markdown-content th, .markdown-content td {
+            border: 1px solid #444;
+            padding: 0.75rem;
+        }
+        .markdown-content th {
+            background-color: #333;
+        }
+        
+        /* 圖片 */
+        .markdown-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        /* 返回按鈕 */
+        .back-btn {
+            position: fixed;
+            top: 100px;
+            left: 40px;
+            display: none;
+        }
+        @media (min-width: 1200px) { .back-btn { display: block; } }
+    </style>
+</head>
+<body class="bg-dark text-white">
+
+<!-- Navigation -->
+<nav th:replace="~{fragments/navbar :: navbar}"></nav>
+
+<!-- 返回按鈕 (Desktop) -->
+<div class="back-btn">
+    <a href="/" class="btn btn-outline-secondary rounded-circle p-3" title="Back to Home">
+        <i class="fas fa-arrow-left fa-lg"></i>
+    </a>
+</div>
+
+<div class="container post-container" style="max-width: 1200px;">
+    <div class="row">
+        <!-- Table of Contents (Sticky Sidebar) -->
+        <div class="col-lg-3 d-none d-lg-block">
+            <div class="sticky-top" style="top: 100px;">
+                <h5 class="fw-bold mb-3 ps-3 border-start border-4 border-primary">目錄 (TOC)</h5>
+                <nav id="toc" class="nav flex-column small"></nav>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-lg-9">
+            <!-- 文章標頭 -->
+            <header class="mb-5 text-center">
+                <!-- 分類標籤 -->
+                <a th:href="@{/(category=${post.category})}" class="badge bg-primary mb-3 text-decoration-none rounded-pill px-3 py-2">
+                    [[${post.category}]]
+                </a>
+                
+                <h1 class="display-4 fw-bold mb-3" th:text="${post.title}">Post Title</h1>
+                
+                <!-- 封面圖片 (大圖) -->
+                <div th:if="${post.coverImage}" class="mb-4">
+                    <img th:src="@{'/uploads/' + ${post.coverImage}}" class="img-fluid rounded shadow-lg" 
+                         style="max-height: 500px; width: 100%; object-fit: cover;" alt="Cover Image">
+                </div>
+        
+                <div class="d-flex justify-content-center text-muted align-items-center gap-3">
+                    <span><i class="far fa-calendar-alt me-1"></i> [[${#temporals.format(post.createdTime, 'yyyy-MM-dd')}]]</span>
+                    <span>|</span>
+                    <span><i class="far fa-clock me-1"></i> [[${post.readingTime}]]</span>
+                </div>
+            </header>
+        
+            <!-- 文章內容 (Rendered HTML) -->
+            <article class="markdown-content post-content">
+                <!-- utext 會解析 HTML 標籤，不會轉義 -->
+                <div th:utext="${htmlContent}">
+                    Content PlaceHolder...
+                </div>
+            </article>
+            
+            <hr class="my-5 border-secondary">
+                
+            <!-- Related Posts -->
+            <div th:if="${not #lists.isEmpty(relatedPosts)}" class="mb-5">
+                <h4 class="fw-bold mb-4"><i class="fas fa-link me-2 text-info"></i>相關文章</h4>
+                <div class="row g-3">
+                    <div class="col-md-4" th:each="relatedPost : ${relatedPosts}">
+                        <div class="card h-100 bg-dark text-white border-secondary">
+                            <div class="card-body">
+                                <h6 class="card-title fw-bold">
+                                    <a th:href="@{/posts/{id}(id=${relatedPost.id})}" class="text-white text-decoration-none stretched-link" th:text="${relatedPost.title}">Post Title</a>
+                                </h6>
+                                <small class="text-muted">[[${#temporals.format(relatedPost.createdTime, 'yyyy-MM-dd')}]]</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="my-5 border-secondary">
+
+            <!-- Comment Section -->
+            <div class="mb-5" id="comments">
+                <h4 class="fw-bold mb-4"><i class="fas fa-comments me-2 text-warning"></i>留言 ([[${post.comments.size()}]])</h4>
+                
+                <!-- Comment List -->
+                <div class="mb-5">
+                    <div th:if="${#lists.isEmpty(post.comments)}" class="text-muted fst-italic">
+                        目前還沒有留言，搶頭香吧！
+                    </div>
+                    <div th:each="comment : ${post.comments}" class="d-flex mb-3 p-3 rounded bg-secondary bg-opacity-10">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-user-circle fa-2x text-muted"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <h6 class="fw-bold mb-0 text-info" th:text="${comment.nickname}">Nickname</h6>
+                                <small class="text-muted" th:text="${#temporals.format(comment.createdTime, 'yyyy-MM-dd HH:mm')}">Time</small>
+                            </div>
+                            <p class="mb-0 text-light" th:text="${comment.content}">Comment Content</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Comment Form -->
+                <div class="card bg-dark border-secondary">
+                    <div class="card-header border-secondary fw-bold text-white">
+                        <i class="fas fa-pen me-2"></i>留下你的想法
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/posts/{postId}/comments(postId=${post.id})}" method="post">
+                            <div class="mb-3">
+                                <label for="nickname" class="form-label text-light">暱稱</label>
+                                <input type="text" class="form-control bg-dark text-white border-secondary" id="nickname" name="nickname" required placeholder="怎麼稱呼你？">
+                            </div>
+                            <div class="mb-3">
+                                <label for="content" class="form-label text-light">留言內容</label>
+                                <textarea class="form-control bg-dark text-white border-secondary" id="content" name="content" rows="3" required placeholder="分享你的看法..."></textarea>
+                            </div>
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-warning text-dark fw-bold">
+                                    <i class="fas fa-paper-plane me-1"></i> 送出留言
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- 底部操作區 -->
+            <div class="mt-5 pt-4 border-top border-secondary d-flex justify-content-between align-items-center">
+                <a href="/" class="btn btn-outline-light"><i class="fas fa-arrow-left me-2"></i>回首頁</a>
+                
+                <!-- 管理員操作 (編輯/刪除) -->
+                <div sec:authorize="hasRole('ADMIN')">
+                    <a th:href="@{/posts/edit/{id}(id=${post.id})}" class="btn btn-info me-2">
+                        <i class="fas fa-edit me-1"></i> 編輯
+                    </a>
+                    <a th:href="@{/posts/delete/{id}(id=${post.id})}" class="btn btn-danger"
+                       onclick="return confirm('確定要刪除這篇文章嗎？');">
+                        <i class="fas fa-trash-alt me-1"></i> 刪除
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="text-center py-4 mt-5">
+    <small class="text-muted">© 2026 Daily Coding. All rights reserved.</small>
+</footer>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Highlight.js 初始化 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script>
+    // Highlight.js Initialization & TOC Generation
+    document.addEventListener('DOMContentLoaded', (event) => {
+        document.querySelectorAll('pre code').forEach((el) => {
+            hljs.highlightElement(el);
+        });
+        generateTOC();
+    });
+    
+    // Auto-Generate Table of Contents
+    function generateTOC() {
+        const content = document.querySelector('.post-content');
+        const toc = document.querySelector('#toc');
+        if (!content || !toc) return;
+
+        const headers = content.querySelectorAll('h1, h2, h3');
+        if (headers.length === 0) {
+            toc.parentElement.parentElement.classList.add('d-none'); // Hide TOC column if no headers
+            document.querySelector('.col-lg-9').classList.remove('col-lg-9'); // Expand content to full width
+            document.querySelector('.col-lg-9').classList.add('col-lg-8', 'mx-auto'); 
+            return;
+        }
+
+        headers.forEach((header, index) => {
+            // Add ID to header
+            const id = 'section-' + index;
+            header.id = id;
+
+            // Create link
+            const link = document.createElement('a');
+            link.href = '#' + id;
+            link.className = 'nav-link text-muted py-1';
+            link.textContent = header.textContent;
+            
+            // Indent based on header level
+            if (header.tagName === 'H2') link.style.paddingLeft = '1rem';
+            if (header.tagName === 'H3') link.style.paddingLeft = '2rem';
+
+            // Active state on scroll (Simple implementation)
+            link.onclick = (e) => {
+                e.preventDefault();
+                document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+                // Update URL hash without jumping
+                history.pushState(null, null, '#' + id);
+            };
+
+            toc.appendChild(link);
+        });
+    }
+</script>
+
+</body>
+</html>

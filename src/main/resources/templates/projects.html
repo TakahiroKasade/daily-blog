@@ -33,8 +33,10 @@
     <div class="row">
         <div class="col-md-4 mb-4" th:each="project : ${projects}">
             <div class="card project-card h-100">
-                <img th:src="${project.imageUrl != null && project.imageUrl != '' ? project.imageUrl : 'https://via.placeholder.com/400x200?text=No+Image'}" 
-                     class="card-img-top" alt="Project Image">
+                <img th:src="${project.imageUrl == null || project.imageUrl == '' ? 'https://via.placeholder.com/400x200?text=No+Image' : 
+                             (#strings.startsWith(project.imageUrl, 'http') ? project.imageUrl : '/uploads/' + project.imageUrl)}" 
+                     class="card-img-top" alt="Project Image"
+                     onerror="this.onerror=null;this.src='https://via.placeholder.com/400x200?text=No+Image';">
                 
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title fw-bold" th:text="${project.name}">專案名稱</h5>

@@ -26,7 +26,7 @@
                     <h3 class="text-info mb-0"><i class="fas fa-pencil-alt me-2"></i>Edit Post</h3>
                 </div>
                 <div class="card-body">
-                    <form th:action="@{/posts/edit/{id}(id=${post.id})}" th:object="${post}" method="post">
+                    <form th:action="@{/posts/edit/{id}(id=${post.id})}" th:object="${post}" method="post" enctype="multipart/form-data">
                         <!-- Title Field -->
                         <div class="mb-3">
                             <label for="title" class="form-label fw-bold text-info">Title</label>
@@ -42,6 +42,17 @@
                                 <option value="Showcase">Showcase (作品)</option>
                             </select>
                         </div>
+                        
+                        <!-- Image Upload Field -->
+                        <div class="mb-3">
+                            <label for="image" class="form-label fw-bold text-info">Cover Image</label>
+                            <input type="file" class="form-control" name="file" id="image" accept="image/*">
+                            <div th:if="${post.coverImage}" class="mt-2">
+                                <img th:src="@{'/uploads/' + ${post.coverImage}}" alt="Current Cover" style="max-height: 150px; border-radius: 8px;">
+                                <p class="text-muted small mt-1">Current Cover Image</p>
+                            </div>
+                        </div>
+
                         <!-- Content Field -->
                         <div class="mb-3">
                             <label for="content" class="form-label fw-bold text-info">Content</label>

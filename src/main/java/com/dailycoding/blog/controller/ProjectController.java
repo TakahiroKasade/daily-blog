@@ -15,9 +15,11 @@ import java.util.List;
 public class ProjectController {
 
     private ProjectService projectService;
+    private com.dailycoding.blog.service.FileStorageService fileStorageService;
 
-    public ProjectController(ProjectService projectService){
+    public ProjectController(ProjectService projectService, com.dailycoding.blog.service.FileStorageService fileStorageService){
         this.projectService = projectService;
+        this.fileStorageService = fileStorageService;
     }
 
     //專案列表頁面
@@ -38,7 +40,15 @@ public class ProjectController {
 
     //儲存專案
     @PostMapping("/projects")
-    public String saveProject(Project project){
+    public String saveProject(@ModelAttribute Project project, 
+                              @org.springframework.web.bind.annotation.RequestParam("file") org.springframework.web.multipart.MultipartFile file){
+        
+        // 儲存圖片
+        if (!file.isEmpty()) {
+            String fileName = fileStorageService.storeFile(file);
+            project.setImageUrl(fileName); // 重用 imageUrl 欄位存檔名
+        }
+        
         projectService.saveProject(project);
         return "redirect:/projects";
     }
@@ -53,7 +63,19 @@ public class ProjectController {
 
     //更新專案
     @PostMapping("projects/edit/{id}")
-    public String  updateProject(@PathVariable Long id,@ModelAttribute Project project){
+    public String  updateProject(@PathVariable Long id, @ModelAttribute Project project,
+                                 @org.springframework.web.bind.annotation.RequestParam("file") org.springframework.web.multipart.MultipartFile file){
+        
+        // 取得舊的專案資訊
+        Project existingProject = projectService.getProjectById(id);
+
+        if (!file.isEmpty()) {
+            String fileName = fileStorageService.storeFile(file);
+            project.setImageUrl(fileName);
+        } else {
+            project.setImageUrl(existingProject.getImageUrl());
+        }
+
         project.setId(id);
         projectService.saveProject(project);
         return "redirect:/projects";

@@ -117,6 +117,11 @@
         <div class="row g-4">
             <div class="col-md-6" th:each="project : ${projects}">
                 <div class="card h-100">
+                    <!-- 專案縮圖 -->
+                    <img th:src="${project.imageUrl == null || project.imageUrl == '' ? 'https://via.placeholder.com/400x200?text=No+Image' : 
+                                 (#strings.startsWith(project.imageUrl, 'http') ? project.imageUrl : '/uploads/' + project.imageUrl)}" 
+                         class="card-img-top" alt="Project Image" style="height: 200px; object-fit: cover;"
+                         onerror="this.onerror=null;this.src='https://via.placeholder.com/400x200?text=No+Image';">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-start mb-3">
                             <h3 class="card-title h5" th:text="${project.name}">Project Name</h3>
@@ -167,9 +172,16 @@
                                 </span>
                             </div>
                         </div>
-                        <p class="mb-3 text-light" th:text="${post.content}">Content...</p>
+                        
+                        <!-- 封面圖片 (如果有) -->
+                        <div th:if="${post.coverImage}" class="mb-3">
+                            <img th:src="@{'/uploads/' + ${post.coverImage}}" class="img-fluid rounded" 
+                                 style="max-height: 300px; width: 100%; object-fit: cover;" alt="Cover Image">
+                        </div>
+
+                        <p class="mb-3 text-light" th:text="${summaries[post.id]}">Content Summary...</p>
                         <div class="d-flex justify-content-between align-items-center mt-2 pt-3 border-top border-secondary">
-                            <a href="#" class="btn btn-sm btn-outline-primary rounded-pill px-3">Read Full Story</a>
+                            <a th:href="@{/posts/{id}(id=${post.id})}" class="btn btn-sm btn-outline-primary rounded-pill px-3">Read Full Story</a>
                             <div sec:authorize="hasRole('ADMIN')">
                                 <a th:href="@{/posts/edit/{id}(id=${post.id})}" 
                                    class="btn btn-sm btn-outline-info me-2">

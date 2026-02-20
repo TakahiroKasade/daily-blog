@@ -48,5 +48,10 @@ public class PostService {
     public List<Post> getPostsByCategory(String category) {
         return postRepository.findByCategory(category);
     }
+    
+    // 7. 取得相關文章 (同分類，排除自己，取前3篇)
+    public List<Post> getRelatedPosts(Post currentPost) {
+        return postRepository.findTop3ByCategoryAndIdNotOrderByCreatedTimeDesc(currentPost.getCategory(), currentPost.getId());
+    }
 
 }

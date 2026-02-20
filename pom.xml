@@ -96,6 +96,18 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- 10. Markdown Parser (CommonMark) -->
+        <dependency>
+            <groupId>org.commonmark</groupId>
+            <artifactId>commonmark</artifactId>
+            <version>0.21.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.commonmark</groupId>
+            <artifactId>commonmark-ext-gfm-tables</artifactId>
+            <version>0.21.0</version>
+        </dependency>
+
         <!-- 測試用-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "posts")
@@ -26,7 +28,15 @@ public class Post {
     private LocalDateTime createdTime;
 
     @Column(columnDefinition = "VARCHAR(255) DEFAULT 'Tech'") // 設定資料庫預設值
-    private String category = "Tech"; 
+    private String category = "Tech";
+
+    private String coverImage; // 封面圖片檔名 (例如: uuid.jpg) 
+
+    // 一對多關聯：一篇文章有多則留言
+    // mappedBy = "post" 對應 Comment 實體中的 post 屬性
+    // CascadeType.ALL: 刪除文章時，留言也會被刪除
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>(); 
 
     // 自訂建構子如果不被 Lombok @AllArgsConstructor 覆蓋，或是需要特定參數的建構子，可以保留
     public Post(String title, String content, LocalDateTime createdTime, String category) {

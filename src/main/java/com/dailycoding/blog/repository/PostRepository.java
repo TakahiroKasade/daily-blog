@@ -12,4 +12,6 @@ public interface PostRepository extends JpaRepository<Post,Long> {
     List<Post> findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(String title, String content);
     // 根據分類搜尋文章
     List<Post> findByCategory(String category);
+    // 取得同分類的最新 3 篇文章，排除當前文章
+    List<Post> findTop3ByCategoryAndIdNotOrderByCreatedTimeDesc(String category, Long id);
 }
