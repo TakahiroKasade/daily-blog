@@ -12,7 +12,7 @@ import java.util.Map;
 public interface AuditLogRepository extends JpaRepository<AuditLog, Long> {
 
     /**
-     * 統計最近 7 天的每日操作次數
+     * Count daily audit activity across the last 7 days.
      */
     @Query(value = "SELECT CAST(created_at AS DATE) as date, COUNT(*) as count " +
                    "FROM audit_logs " +
@@ -22,7 +22,7 @@ public interface AuditLogRepository extends JpaRepository<AuditLog, Long> {
     List<Map<String, Object>> findLast7DaysActivity();
 
     /**
-     * 統計特定使用者最近 7 天的每日操作次數
+     * Count daily audit activity for one operator across the last 7 days.
      */
     @Query(value = "SELECT CAST(created_at AS DATE) as date, COUNT(*) as count " +
                    "FROM audit_logs " +
@@ -32,7 +32,7 @@ public interface AuditLogRepository extends JpaRepository<AuditLog, Long> {
     List<Map<String, Object>> findLast7DaysActivityByOperator(String operator);
 
     /**
-     * 統計特定使用者的操作類型佔比
+     * Count audit operations grouped by operation for one operator.
      */
     @Query(value = "SELECT operation as label, COUNT(*) as value " +
                    "FROM audit_logs " +
@@ -41,7 +41,16 @@ public interface AuditLogRepository extends JpaRepository<AuditLog, Long> {
     List<Map<String, Object>> findOperationDistributionByOperator(String operator);
 
     /**
-     * 獲取特定使用者最近的 10 筆操作紀錄
+     * Count all audit operations grouped by operation for the admin dashboard.
+     */
+    @Query(value = "SELECT operation as label, COUNT(*) as value " +
+                   "FROM audit_logs " +
+                   "GROUP BY operation " +
+                   "ORDER BY value DESC", nativeQuery = true)
+    List<Map<String, Object>> findOperationDistribution();
+
+    /**
+     * Find the latest 10 audit logs for one operator.
      */
     List<AuditLog> findTop10ByOperatorOrderByCreatedAtDesc(String operator);
 }
