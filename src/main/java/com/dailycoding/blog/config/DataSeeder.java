@@ -1,19 +1,14 @@
 package com.dailycoding.blog.config;
 
-import com.dailycoding.blog.entity.Experience;
-import com.dailycoding.blog.entity.Post;
-import com.dailycoding.blog.entity.Project;
-import com.dailycoding.blog.entity.User;
-import com.dailycoding.blog.repository.ExperienceRepository;
-import com.dailycoding.blog.repository.PostRepository;
-import com.dailycoding.blog.repository.ProjectRepository;
-import com.dailycoding.blog.repository.UserRepository;
+import com.dailycoding.blog.entity.*;
+import com.dailycoding.blog.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Set;
 
 @Component
 public class DataSeeder implements CommandLineRunner {
@@ -23,14 +18,19 @@ public class DataSeeder implements CommandLineRunner {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
     private ExperienceRepository experienceRepository;
+    private RoleRepository roleRepository;
+    private PermissionRepository permissionRepository;
 
     public DataSeeder(PostRepository postRepository, ProjectRepository projectRepository, UserRepository userRepository,
-                      PasswordEncoder  passwordEncoder, ExperienceRepository experienceRepository) {
+                      PasswordEncoder  passwordEncoder, ExperienceRepository experienceRepository,
+                      RoleRepository roleRepository, PermissionRepository permissionRepository) {
         this.postRepository = postRepository;
         this.projectRepository = projectRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.experienceRepository = experienceRepository;
+        this.roleRepository = roleRepository;
+        this.permissionRepository = permissionRepository;
     }
     @Override
     public void run(String... args) throws Exception {
@@ -54,11 +54,24 @@ public class DataSeeder implements CommandLineRunner {
             System.out.println("✅ 預設作品資料已建立！");
         }
 
+        if (roleRepository.count() == 0) {
+            Permission p1 = new Permission(null, "POST_READ");
+            Permission p2 = new Permission(null, "POST_WRITE");
+            permissionRepository.saveAll(Arrays.asList(p1, p2));
+
+            Role adminRole = new Role(null, "ROLE_ADMIN", Set.of(p1, p2));
+            Role userRole = new Role(null, "ROLE_USER", Set.of(p1));
+            roleRepository.saveAll(Arrays.asList(adminRole, userRole));
+            System.out.println("✅ 預設角色與權限已建立！");
+        }
+
         if (userRepository.count() == 0) {
+            Role adminRole = roleRepository.findByName("ROLE_ADMIN").orElseThrow();
+            
             User user = new User();
             user.setUsername("admin");
             user.setPassword(passwordEncoder.encode("admin123"));
-            user.setRole("ADMIN");
+            user.setRoles(Set.of(adminRole));
             userRepository.save(user);
             System.out.println("管理者帳號已建立");
         }

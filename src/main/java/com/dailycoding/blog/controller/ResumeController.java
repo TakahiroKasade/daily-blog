@@ -1,5 +1,6 @@
 package com.dailycoding.blog.controller;
 
+import com.dailycoding.blog.annotation.LogOperation;
 import com.dailycoding.blog.entity.Experience;
 import com.dailycoding.blog.service.ExperienceService;
 import org.springframework.stereotype.Controller;
@@ -54,6 +55,7 @@ public class ResumeController {
      * @return 重導向至履歷頁面
      */
     @PostMapping("/experiences")
+    @LogOperation("新增經歷")
     public String createExperience(@ModelAttribute Experience experience) {
         experienceService.saveExperience(experience);
         return "redirect:/resume";
@@ -79,6 +81,7 @@ public class ResumeController {
      * @return 重導向至履歷頁面
      */
     @PostMapping("/experiences/edit/{id}")
+    @LogOperation("更新經歷")
     public String updateExperience(@PathVariable Long id, @ModelAttribute Experience experience) {
         experience.setId(id);
         experienceService.saveExperience(experience);
@@ -91,6 +94,7 @@ public class ResumeController {
      * @return 重導向至履歷頁面
      */
     @GetMapping("/experiences/delete/{id}")
+    @LogOperation("刪除經歷")
     public String deleteExperience(@PathVariable Long id) {
         experienceService.deleteExperienceById(id);
         return "redirect:/resume";
@@ -98,4 +102,3 @@ public class ResumeController {
 
     
 }
-

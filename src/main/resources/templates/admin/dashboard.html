@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<th:block th:replace="~{fragments/navbar :: navbar}"></th:block>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>系統儀表板 - 管理後台</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-dark text-white">
+<div class="container mt-5 pt-5">
+    <h2 class="mb-4"><i class="fas fa-chart-line me-2"></i>系統數據儀表板</h2>
+
+    <div class="row">
+        <!-- 活躍度折線圖 -->
+        <div class="col-md-8 mb-4">
+            <div class="card bg-secondary border-0 shadow">
+                <div class="card-header bg-transparent border-bottom border-dark">
+                    <h5 class="card-title mb-0">最近 7 天操作活躍度</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="activityChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 分佈圓餅圖 -->
+        <div class="col-md-4 mb-4">
+            <div class="card bg-secondary border-0 shadow">
+                <div class="card-header bg-transparent border-bottom border-dark">
+                    <h5 class="card-title mb-0">操作功能分佈</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="distributionChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="alert alert-info bg-opacity-10 border-info text-info">
+                <i class="fas fa-info-circle me-2"></i>
+                提示：數據來源於系統自動紀錄的 <strong>Audit Logs</strong>，反映了所有管理員與使用者的敏感操作。
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 1. 渲染活躍度折線圖
+    fetch('/admin/api/stats/activity')
+        .then(response => response.json())
+        .then(data => {
+            const labels = data.map(item => item.date);
+            const values = data.map(item => item.count);
+
+            new Chart(document.getElementById('activityChart'), {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '操作次數',
+                        data: values,
+                        borderColor: '#0dcaf0',
+                        backgroundColor: 'rgba(13, 202, 240, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: '#444' }, ticks: { color: '#fff' } },
+                        x: { grid: { color: '#444' }, ticks: { color: '#fff' } }
+                    },
+                    plugins: { legend: { labels: { color: '#fff' } } }
+                }
+            });
+        });
+
+    // 2. 渲染操作分佈圓餅圖
+    fetch('/admin/api/stats/distribution')
+        .then(response => response.json())
+        .then(data => {
+            const labels = data.map(item => item.label);
+            const values = data.map(item => item.value);
+
+            new Chart(document.getElementById('distributionChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: values,
+                        backgroundColor: [
+                            '#ff6384', '#36a2eb', '#ffce56', '#4bc0c0', '#9966ff', '#ff9f40'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { color: '#fff' } }
+                    }
+                }
+            });
+        });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

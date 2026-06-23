@@ -2,10 +2,15 @@ package com.dailycoding.blog.service;
 
 import com.dailycoding.blog.entity.User;
 import com.dailycoding.blog.repository.UserRepository;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -21,11 +26,20 @@ public class CustomUserDetailsService implements UserDetailsService {
 
        User user = userRepository.findByUsername(username)
                .orElseThrow(() -> new UsernameNotFoundException("找不到使用者: "+ username));
-       return org.springframework.security.core.userdetails.User
-               .withUsername(user.getUsername())
-               .password(user.getPassword())
-               .roles(user.getRole())
-               .build();
+       
+       List<GrantedAuthority> authorities = new ArrayList<>();
+       user.getRoles().forEach(role -> {
+           authorities.add(new SimpleGrantedAuthority(role.getName()));
+           role.getPermissions().forEach(permission -> {
+               authorities.add(new SimpleGrantedAuthority(permission.getName()));
+           });
+       });
+
+       return new org.springframework.security.core.userdetails.User(
+               user.getUsername(),
+               user.getPassword(),
+               authorities
+       );
 
    }
 

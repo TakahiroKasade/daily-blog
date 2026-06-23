@@ -1,5 +1,6 @@
 package com.dailycoding.blog.controller;
 
+import com.dailycoding.blog.annotation.LogOperation;
 import com.dailycoding.blog.entity.Post;
 import com.dailycoding.blog.service.MarkdownService;
 import com.dailycoding.blog.service.PostService;
@@ -31,14 +32,14 @@ public class PostController {
     }
 
     @PostMapping("posts")
+    @LogOperation("新增文章")
     public String createPost(@ModelAttribute Post post){
-
         postService.savePost(post);
-
         return  "redirect:/";
     }
 
     @GetMapping("posts/delete/{id}")
+    @LogOperation("刪除文章")
     public String deletePost(@PathVariable Long id){
         postService.deletePost(id);
         return "redirect:/";
@@ -52,6 +53,7 @@ public class PostController {
     }
 
     @PostMapping("posts/edit/{id}")
+    @LogOperation("更新文章")
     public String updatePost(@PathVariable Long id, @ModelAttribute Post post){
         post.setId(id);
         postService.savePost(post);
@@ -67,7 +69,6 @@ public class PostController {
         }
         
         // 將 Markdown 內容轉換為 HTML
-        // 將 Markdown 內容轉換為 HTML
         String htmlContent = markdownService.renderToHtml(post.getContent());
         
         // 取得相關文章
@@ -81,4 +82,3 @@ public class PostController {
     }
 
 }
-

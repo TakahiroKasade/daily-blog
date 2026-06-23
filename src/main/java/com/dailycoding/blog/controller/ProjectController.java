@@ -1,5 +1,6 @@
 package com.dailycoding.blog.controller;
 
+import com.dailycoding.blog.annotation.LogOperation;
 import com.dailycoding.blog.entity.Project;
 import com.dailycoding.blog.service.ProjectService;
 import org.springframework.stereotype.Controller;
@@ -40,6 +41,7 @@ public class ProjectController {
 
     //儲存專案
     @PostMapping("/projects")
+    @LogOperation("新增作品")
     public String saveProject(@ModelAttribute Project project, 
                               @org.springframework.web.bind.annotation.RequestParam("file") org.springframework.web.multipart.MultipartFile file){
         
@@ -63,6 +65,7 @@ public class ProjectController {
 
     //更新專案
     @PostMapping("projects/edit/{id}")
+    @LogOperation("更新作品")
     public String  updateProject(@PathVariable Long id, @ModelAttribute Project project,
                                  @org.springframework.web.bind.annotation.RequestParam("file") org.springframework.web.multipart.MultipartFile file){
         
@@ -83,6 +86,7 @@ public class ProjectController {
 
     //刪除專案
     @GetMapping("/projects/delete/{id}")
+    @LogOperation("刪除作品")
     public String deleteProject(@PathVariable Long id){
         projectService.deleteProject(id);
         return "redirect:/projects";

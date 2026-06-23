@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name= "users")
 @Data
@@ -22,12 +25,16 @@ public class User {
     @Column(nullable = false)
     private String password;
     
-    private String role;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "user_roles",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles = new HashSet<>();
 
-    // 自訂建構子如果不被 Lombok @AllArgsConstructor 覆蓋，或是需要特定參數的建構子，可以保留
-    public User(String username, String password, String role) {
+    public User(String username, String password) {
         this.username = username;
         this.password = password;
-        this.role = role;
     }
 }
