@@ -31,3 +31,31 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Local environment ###
+.env
+.env.*
+!.env.example
+application-local.properties
+src/main/resources/application-local.properties
+
+### Runtime files ###
+logs/
+*.log
+hs_err_pid*
+replay_pid*
+uploads/*
+!uploads/.gitkeep
+
+### AI / agent local context ###
+CONTEXT.md
+GEMINI.md
+TODO.md
+.antigravity/
+.agy/
+.codex/
+.gemini/
+.claude/
+.cursor/
+.windsurf/
+.aider*
