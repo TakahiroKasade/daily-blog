@@ -1,5 +1,7 @@
 package com.dailycoding.blog.config;
 
+import com.dailycoding.blog.security.LoginAuthenticationFailureHandler;
+import com.dailycoding.blog.security.LoginAuthenticationSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -15,13 +17,14 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain configure(HttpSecurity http) throws Exception{
-
+    public SecurityFilterChain configure(HttpSecurity http,
+                                         LoginAuthenticationFailureHandler failureHandler,
+                                         LoginAuthenticationSuccessHandler successHandler) throws Exception {
         http
             .authorizeHttpRequests((requests) -> requests
-                    .requestMatchers("/","/register","/login","/css/**","/js/**","/images/**", "/posts/{id}/**").permitAll()
-                    .requestMatchers("/admin/api/stats/user").authenticated() // 允許所有登入者查自己的數據
-                    .requestMatchers("/admin/**").hasRole("ADMIN") // 其他 admin 路徑僅限管理員
+                    .requestMatchers("/", "/register", "/login", "/css/**", "/js/**", "/images/**", "/posts/{id}/**").permitAll()
+                    .requestMatchers("/admin/api/stats/user").authenticated()
+                    .requestMatchers("/admin/**").hasRole("ADMIN")
                     .requestMatchers("/posts/new", "/posts", "/posts/edit/**", "/posts/delete/**").hasAuthority("POST_WRITE")
                     .requestMatchers("/projects/new", "/projects", "/projects/edit/**", "/projects/delete/**").hasRole("ADMIN")
                     .requestMatchers("/experiences/new", "/experiences/**").hasRole("ADMIN")
@@ -29,7 +32,8 @@ public class SecurityConfig {
             )
             .formLogin((form) -> form
                     .loginPage("/login")
-                    .defaultSuccessUrl("/", true)
+                    .successHandler(successHandler)
+                    .failureHandler(failureHandler)
                     .permitAll()
             )
             .logout((logout) -> logout
@@ -41,7 +45,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }
